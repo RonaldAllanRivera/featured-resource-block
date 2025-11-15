@@ -14,6 +14,20 @@ No other plugins are required.
 
 ---
 
+## Version & Development Status
+
+- **Current version**: `0.1.0`
+- **Implemented**:
+  - Core plugin bootstrap file and autoloader.
+  - `FRB_Plugin` orchestrator with activation/deactivation hooks.
+  - Project documentation (`PLAN.md`, `README.md`, `CHANGELOG.md`).
+- **Planned (next phases)**:
+  - `Resources` custom post type and meta.
+  - Elementor `Featured Resource Block` widget.
+  - Resource Sync settings page and mock API sync service.
+
+---
+
 ## Installation
 
 1. **Download or clone** this repository into  

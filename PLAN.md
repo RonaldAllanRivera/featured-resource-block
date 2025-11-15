@@ -283,8 +283,7 @@ Later, I’ll help you turn this outline into a full spoken script.
 
 ## 12. Implementation Phases
 
-### Phase 0 – Environment & Repository Setup
-
+### Phase 0 – Environment & Repository Setup (Completed)
 - **Objectives**
   - Have a clean, reproducible local environment and a well-structured Git repository.
   - Capture initial decisions so reviewers can see your thought process.
@@ -299,7 +298,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Clean repo with only relevant files tracked.
   - Documented environment assumptions in `README.md` (already covered at a high level).
 
-### Phase 1 – Plugin Skeleton & Bootstrap
+### Phase 1 – Plugin Skeleton & Bootstrap (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (bootstrap file, `FRB_Plugin` core class, activation/deactivation hooks).
 
 - **Objectives**
   - Create a minimal but production-ready plugin skeleton that cleanly boots all components.
