@@ -24,9 +24,10 @@ No other plugins are required.
   - Project documentation (`PLAN.md`, `README.md`, `CHANGELOG.md`).
   - `Resources` custom post type and meta.
   - Elementor `Featured Resource Block` widget (Elementor integration and frontend CSS).
-  - Resource Sync settings page and options.
+  - Resource Sync settings page and options (API Key, API Endpoint, Enable Sync, status panel, and "Run Sync Now" button).
+  - Mock API sync service (cron + transients) powered by `FRB_Sync_Service` and `FRB_Cron_Manager`, with configurable endpoint and a local mock REST endpoint for offline testing.
 - **Planned (next phases)**:
-  - Mock API sync service (cron + transients).
+  - Front-end polish, accessibility improvements, QA hardening, and final video walkthrough (see `PLAN.md` Phases 6–8).
 
 ---
 
@@ -87,6 +88,7 @@ No other plugins are required.
 1. Go to **Settings → Resource Sync**.
 2. Configure:
    - **API Key** – your API key (mocked for this assignment, but handled as real config).
+   - **API Endpoint** – the remote or local URL to fetch resources from (defaults to the assignment’s mock endpoint; the settings page also shows a local mock URL you can copy).
    - **Enable Sync** – turn scheduled syncing on or off.
 3. Click **Save Changes**.
 
@@ -108,7 +110,20 @@ No other plugins are required.
 - When **Enable Sync** is OFF:
   - The scheduled cron event is unscheduled to avoid unnecessary processing.
 
-> Note: WP-Cron runs when your site receives traffic. On local environments, you may trigger cron manually or via WP-CLI during development.
+> Note: WP-Cron runs when your site receives traffic. This plugin registers an event named `frb_resource_sync_cron` every 15 minutes; WP-Cron (or a real server cron job) is what actually triggers it. On local environments, you can trigger it manually via WP-CLI during development.
+
+### Manual Sync in Development
+
+On local environments you can manually run the same job that WP-Cron triggers:
+
+- Use the **Run Sync Now** button on the Resource Sync settings page; or
+- Use WP-CLI:
+
+  ```bash
+  wp cron event run frb_resource_sync_cron
+  ```
+
+Both paths use the current Resource Sync settings (API key, API endpoint, Enable Sync) and the cached API response (transient) in exactly the same way as the scheduled run.
 
 ---
 
@@ -130,7 +145,6 @@ These trade-offs are intentional for a small assignment and can be improved if n
 ## What I’d Improve with More Time
 
 - **Richer sync management**
-  - Manual “Sync Now” button on the settings page.
   - Detailed sync logs (separate log table or CPT).
   - Configurable sync interval.
 

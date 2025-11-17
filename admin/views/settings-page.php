@@ -18,6 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<p><?php esc_html_e( 'Configure how the Featured Resource Block plugin synchronises mock resources from the remote API.', 'featured-resource-block' ); ?></p>
 
+	<?php if ( isset( $_GET['frb_sync_ran'] ) && '1' === $_GET['frb_sync_ran'] ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( 'Sync has been run manually.', 'featured-resource-block' ); ?></p>
+		</div>
+	<?php endif; ?>
+
 	<form method="post" action="options.php">
 		<?php
 		settings_fields( FRB_Settings_Page::OPTION_GROUP );
@@ -49,6 +55,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</p>
 		</div>
 	<?php endif; ?>
+
+	<h2><?php esc_html_e( 'Manual Sync', 'featured-resource-block' ); ?></h2>
+	<p><?php esc_html_e( 'Use this button to run the sync immediately using the same logic as the scheduled cron job.', 'featured-resource-block' ); ?></p>
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<?php wp_nonce_field( 'frb_run_sync_now' ); ?>
+		<input type="hidden" name="action" value="frb_run_sync_now" />
+		<?php submit_button( __( 'Run Sync Now', 'featured-resource-block' ), 'secondary', 'frb-run-sync-now', false ); ?>
+	</form>
 
 	<?php if ( defined( 'FRB_DEBUG' ) && FRB_DEBUG && current_user_can( 'manage_options' ) ) : ?>
 		<hr />

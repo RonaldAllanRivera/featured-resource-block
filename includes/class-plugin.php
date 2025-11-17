@@ -17,9 +17,16 @@ class FRB_Plugin {
 
 	public static function activate() {
 		self::instance();
+
+		if ( class_exists( 'FRB_Cron_Manager' ) ) {
+			FRB_Cron_Manager::activate();
+		}
 	}
 
 	public static function deactivate() {
+		if ( class_exists( 'FRB_Cron_Manager' ) ) {
+			FRB_Cron_Manager::deactivate();
+		}
 	}
 
 	/**
@@ -60,8 +67,14 @@ class FRB_Plugin {
 		if ( class_exists( 'FRB_Elementor_Integration' ) ) {
 			FRB_Elementor_Integration::register();
 		}
-
-		// Sync will be wired in later phases.
+		// Cron manager for scheduled sync.
+		if ( class_exists( 'FRB_Cron_Manager' ) ) {
+			FRB_Cron_Manager::register();
+		}
+		// Local mock API endpoint for development/testing.
+		if ( class_exists( 'FRB_Mock_Api' ) ) {
+			FRB_Mock_Api::register();
+		}
 	}
 
 	/**

@@ -29,6 +29,7 @@ class FRB_Settings_Page {
 	public static function register() {
 		add_action( 'admin_menu', array( __CLASS__, 'add_menu_page' ) );
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
+		add_action( 'admin_post_frb_run_sync_now', array( __CLASS__, 'handle_run_sync_now' ) );
 	}
 
 	/**
@@ -72,6 +73,14 @@ class FRB_Settings_Page {
 		);
 
 		add_settings_field(
+			'api_endpoint',
+			__( 'API Endpoint', 'featured-resource-block' ),
+			array( __CLASS__, 'render_field_api_endpoint' ),
+			self::PAGE_SLUG,
+			'frb_resource_sync_main'
+		);
+
+		add_settings_field(
 			'enable_sync',
 			__( 'Enable Sync', 'featured-resource-block' ),
 			array( __CLASS__, 'render_field_enable_sync' ),
@@ -94,6 +103,16 @@ class FRB_Settings_Page {
 			$options['api_key'] = sanitize_text_field( $input['api_key'] );
 		}
 
+		if ( isset( $input['api_endpoint'] ) ) {
+			$endpoint = trim( $input['api_endpoint'] );
+
+			if ( '' === $endpoint ) {
+				$options['api_endpoint'] = FRB_Sync_Service::API_ENDPOINT;
+			} else {
+				$options['api_endpoint'] = esc_url_raw( $endpoint );
+			}
+		}
+
 		$options['enable_sync'] = ! empty( $input['enable_sync'] ) ? 1 : 0;
 
 		return $options;
@@ -106,8 +125,9 @@ class FRB_Settings_Page {
 	 */
 	public static function get_options() {
 		$defaults = array(
-			'api_key'     => '',
-			'enable_sync' => 0,
+			'api_key'      => '',
+			'api_endpoint' => FRB_Sync_Service::API_ENDPOINT,
+			'enable_sync'  => 0,
 		);
 
 		$options = get_option( self::OPTION_NAME, array() );
@@ -142,6 +162,33 @@ class FRB_Settings_Page {
 	}
 
 	/**
+	 * Render API Endpoint field.
+	 */
+	public static function render_field_api_endpoint() {
+		$options      = self::get_options();
+		$api_endpoint = isset( $options['api_endpoint'] ) ? $options['api_endpoint'] : FRB_Sync_Service::API_ENDPOINT;
+		$local_url    = '';
+
+		if ( function_exists( 'rest_url' ) && class_exists( 'FRB_Mock_Api' ) ) {
+			$local_url = rest_url( trailingslashit( FRB_Mock_Api::REST_NAMESPACE ) . ltrim( FRB_Mock_Api::ROUTE_RESOURCES, '/' ) );
+		}
+		?>
+		<input type="text" name="<?php echo esc_attr( self::OPTION_NAME ); ?>[api_endpoint]" value="<?php echo esc_attr( $api_endpoint ); ?>" class="regular-text code" />
+		<p class="description"><?php esc_html_e( 'Override the default mock API endpoint. Leave blank to use the built-in URL from the assignment.', 'featured-resource-block' ); ?></p>
+		<p class="description">
+			<?php esc_html_e( 'Default online mock endpoint:', 'featured-resource-block' ); ?>
+			<code><?php echo esc_html( FRB_Sync_Service::API_ENDPOINT ); ?></code>
+		</p>
+		<?php if ( ! empty( $local_url ) ) : ?>
+			<p class="description">
+				<?php esc_html_e( 'Local mock endpoint (for testing when the online mock is unavailable):', 'featured-resource-block' ); ?>
+				<code><?php echo esc_html( $local_url ); ?></code>
+			</p>
+		<?php endif; ?>
+		<?php
+	}
+
+	/**
 	 * Render Enable Sync field.
 	 */
 	public static function render_field_enable_sync() {
@@ -169,5 +216,28 @@ class FRB_Settings_Page {
 
 		// Make variables available to the view.
 		require FRB_PLUGIN_DIR . 'admin/views/settings-page.php';
+	}
+
+	public static function handle_run_sync_now() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to do this.', 'featured-resource-block' ) );
+		}
+
+		check_admin_referer( 'frb_run_sync_now' );
+
+		if ( class_exists( 'FRB_Sync_Service' ) ) {
+			FRB_Sync_Service::run();
+		}
+
+		$redirect = wp_get_referer();
+
+		if ( ! $redirect ) {
+			$redirect = admin_url( 'options-general.php?page=' . self::PAGE_SLUG );
+		}
+
+		$redirect = add_query_arg( 'frb_sync_ran', '1', $redirect );
+
+		wp_safe_redirect( $redirect );
+		exit;
 	}
 }

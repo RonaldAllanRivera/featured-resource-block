@@ -34,6 +34,7 @@
   - **Menu**: `Settings → Resource Sync`.
   - **Options**:
     - API Key (text).
+    - API Endpoint (text; defaults to the assignment mock URL, can point to a local mock endpoint).
     - Enable Sync (boolean).
 
 - **Mock API Sync**
@@ -375,7 +376,7 @@ Later, I’ll help you turn this outline into a full spoken script.
 
 - **Key tasks**
   - Implement `FRB_Settings_Page` in `class-settings-page.php`:
-    - Register settings, sections, and fields (`api_key`, `enable_sync`).
+    - Register settings, sections, and fields (`api_key`, `api_endpoint`, `enable_sync`).
     - Render a settings form view from `admin/views/settings-page.php`.
     - Add sanitization callbacks and capability checks.
   - Display helpful contextual text:
@@ -388,6 +389,9 @@ Later, I’ll help you turn this outline into a full spoken script.
 
 ### Phase 5 – Sync Service, Transients & WP-Cron
 
+- **Status**
+  - Completed in version `0.1.0` (FRB_Logger, FRB_Cron_Manager, FRB_Sync_Service, configurable API endpoint, local FRB_Mock_Api REST endpoint, cron wiring, and manual dev sync docs).
+
 - **Objectives**
   - Implement a maintainable sync pipeline that demonstrates solid API integration, caching, and cron scheduling.
 
@@ -395,11 +399,12 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Implement `FRB_Cron_Manager` in `class-cron-manager.php`:
     - Schedule/unschedule `frb_resource_sync_cron` on option changes and activation/deactivation.
   - Implement `FRB_Sync_Service` in `class-sync-service.php`:
-    - Read configuration (API key, enable flag) from options.
+    - Read configuration (API key, API endpoint, enable flag) from options.
     - Handle HTTP requests via `wp_remote_get` with robust error handling.
     - Use transients to cache successful responses for 5 minutes.
     - Map API data to `mist_resource` posts (create or update based on `mist_remote_id`).
   - Implement a small logger (`FRB_Logger`) to centralize error logging and optional debug output.
+  - Implement a local mock API class (`FRB_Mock_Api`) in `class-mock-api.php` to expose a REST endpoint for demo resources.
   - Provide a way to manually trigger sync in development (e.g. temporary admin action or WP-CLI guidance in `README.md`).
 
 - **Deliverables**
