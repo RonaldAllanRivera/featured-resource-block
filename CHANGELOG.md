@@ -17,4 +17,4 @@ All notable changes to this project will be documented in this file.
 - Mock API sync service with transient caching and cron scheduling via `FRB_Sync_Service` and `FRB_Cron_Manager`, including a configurable API endpoint, a local `FRB_Mock_Api` REST endpoint for offline testing, and a manual "Run Sync Now" action on the settings page.
 
 ### Changed
-- Clarified implementation status for Phases 1–5 in `PLAN.md` and `README.md`.
+- Clarified implementation status for Phases 1–6 in `PLAN.md` and `README.md`.

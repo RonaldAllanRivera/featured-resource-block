@@ -163,6 +163,7 @@ class FRB_Widget_Featured_Resource extends \Elementor\Widget_Base {
 		$wrapper_class_attr = implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) );
 
 		$link_url = $resource_url ? $resource_url : get_permalink( $post );
+		$link_aria_label = sprintf( __( 'View resource: %s', 'featured-resource-block' ), $title );
 
 		$image_html = '';
 
@@ -186,7 +187,7 @@ class FRB_Widget_Featured_Resource extends \Elementor\Widget_Base {
 					<?php endif; ?>
 
 					<div class="frb-resource-footer">
-						<a class="frb-resource-button" href="<?php echo esc_url( $link_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<a class="frb-resource-button" href="<?php echo esc_url( $link_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $link_aria_label ); ?>">
 							<?php echo esc_html( $button_text ); ?>
 						</a>
 					</div>

@@ -182,3 +182,6 @@ These trade-offs are intentional for a small assignment and can be improved if n
 - **Performance**  
   API results are cached with transients, and front-end assets are only loaded when needed (when the widget is present on a page).
   - When the `FRB_DEBUG` flag is enabled, the plugin logs a basic "plugin loaded" message to the PHP error log for debugging purposes.
+
+- **Accessibility & motion**  
+  The Featured Resource button has a clear keyboard focus ring, and users with `prefers-reduced-motion` enabled see no hover/scale animations for images or buttons.

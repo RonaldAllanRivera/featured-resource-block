@@ -411,7 +411,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Reliable cron-based sync that can recover from transient errors without breaking the site.
   - Commit (`feat: add API sync service and cron scheduling`).
 
-### Phase 6 – Front-End Polish, Accessibility & Performance
+### Phase 6 – Front-End Polish, Accessibility & Performance (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (frontend.css refinements, reduced-motion support, improved focus styles, accessible CTA aria-label, and conditional style loading via Elementor).
 
 - **Objectives**
   - Ensure the widget output is not just functional but production quality in UX, accessibility, and performance.

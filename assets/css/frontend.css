@@ -72,6 +72,10 @@
   color: #e2e8f0;
 }
 
+.frb-featured-resource.frb-layout-minimal .frb-resource-excerpt {
+  color: #000000;
+}
+
 .frb-featured-resource .frb-resource-footer {
   margin-top: auto;
 }
@@ -96,6 +100,8 @@
   background-color: #1d4ed8;
   transform: translateY(-1px);
   box-shadow: 0 16px 35px rgba(37, 99, 235, 0.4);
+  outline: 2px solid #0ea5e9;
+  outline-offset: 2px;
 }
 
 .frb-featured-resource.frb-layout-minimal .frb-resource-button {
@@ -112,4 +118,12 @@
   .frb-featured-resource.frb-layout-minimal .frb-resource-inner {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.frb-featured-resource .frb-resource-image,
+	.frb-featured-resource .frb-resource-button {
+		transition: none;
+		transform: none !important;
+	}
 }
