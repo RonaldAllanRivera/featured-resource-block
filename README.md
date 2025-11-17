@@ -23,8 +23,8 @@ No other plugins are required.
   - Optional `FRB_DEBUG` flag that logs a basic "plugin loaded" message to the PHP error log when enabled.
   - Project documentation (`PLAN.md`, `README.md`, `CHANGELOG.md`).
   - `Resources` custom post type and meta.
+  - Elementor `Featured Resource Block` widget (Elementor integration and frontend CSS).
 - **Planned (next phases)**:
-  - Elementor `Featured Resource Block` widget.
   - Resource Sync settings page and mock API sync service.
 
 ---

@@ -341,7 +341,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Meta box present and correctly saving/validating `Resource URL`.
   - Commit (`feat: add Resources CPT and meta`) with concise explanation.
 
-### Phase 3 – Elementor Integration & Widget
+### Phase 3 – Elementor Integration & Widget (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (Elementor integration, Featured Resource Block widget, and frontend CSS).
 
 - **Objectives**
   - Provide a well-structured Elementor widget that demonstrates familiarity with Elementor APIs and WordPress data.

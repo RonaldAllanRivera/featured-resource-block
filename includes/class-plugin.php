@@ -52,7 +52,12 @@ class FRB_Plugin {
 		// Admin-specific hooks.
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 
-		// Elementor integration and sync will be wired in later phases.
+		// Elementor integration.
+		if ( class_exists( 'FRB_Elementor_Integration' ) ) {
+			FRB_Elementor_Integration::register();
+		}
+
+		// Sync will be wired in later phases.
 	}
 
 	/**
