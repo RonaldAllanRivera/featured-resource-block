@@ -52,6 +52,10 @@ class FRB_Plugin {
 		// Admin-specific hooks.
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 
+		if ( class_exists( 'FRB_Settings_Page' ) ) {
+			FRB_Settings_Page::register();
+		}
+
 		// Elementor integration.
 		if ( class_exists( 'FRB_Elementor_Integration' ) ) {
 			FRB_Elementor_Integration::register();

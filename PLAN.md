@@ -365,7 +365,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - CSS that is responsive and scoped to the widget.
   - Commit (`feat: add Elementor Featured Resource Block widget`).
 
-### Phase 4 – Settings Page & Options
+### Phase 4 – Settings Page & Options (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (Resource Sync settings page, options, sync status, and debug stored options).
 
 - **Objectives**
   - Expose sync configuration in a clean, WordPress-native settings page under `Settings → Resource Sync`.

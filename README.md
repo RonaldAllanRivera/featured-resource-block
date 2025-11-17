@@ -24,8 +24,9 @@ No other plugins are required.
   - Project documentation (`PLAN.md`, `README.md`, `CHANGELOG.md`).
   - `Resources` custom post type and meta.
   - Elementor `Featured Resource Block` widget (Elementor integration and frontend CSS).
+  - Resource Sync settings page and options.
 - **Planned (next phases)**:
-  - Resource Sync settings page and mock API sync service.
+  - Mock API sync service (cron + transients).
 
 ---
 
