@@ -20,6 +20,7 @@ No other plugins are required.
 - **Implemented**:
   - Core plugin bootstrap file and autoloader.
   - `FRB_Plugin` orchestrator with activation/deactivation hooks.
+  - Optional `FRB_DEBUG` flag that logs a basic "plugin loaded" message to the PHP error log when enabled.
   - Project documentation (`PLAN.md`, `README.md`, `CHANGELOG.md`).
 - **Planned (next phases)**:
   - `Resources` custom post type and meta.
@@ -165,3 +166,4 @@ These trade-offs are intentional for a small assignment and can be improved if n
 
 - **Performance**  
   API results are cached with transients, and front-end assets are only loaded when needed (when the widget is present on a page).
+  - When the `FRB_DEBUG` flag is enabled, the plugin logs a basic "plugin loaded" message to the PHP error log for debugging purposes.

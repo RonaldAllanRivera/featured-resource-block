@@ -29,6 +29,10 @@ if ( ! defined( 'FRB_PLUGIN_VERSION' ) ) {
 	define( 'FRB_PLUGIN_VERSION', '0.1.0' );
 }
 
+if ( ! defined( 'FRB_DEBUG' ) ) {
+	define( 'FRB_DEBUG', false );
+}
+
 function frb_activate_plugin() {
 	if ( class_exists( 'FRB_Plugin' ) && method_exists( 'FRB_Plugin', 'activate' ) ) {
 		FRB_Plugin::activate();

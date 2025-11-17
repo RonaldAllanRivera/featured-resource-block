@@ -59,6 +59,10 @@ class FRB_Plugin {
 	 * General initialization.
 	 */
 	public function init() {
+		if ( defined( 'FRB_DEBUG' ) && FRB_DEBUG ) {
+			error_log( sprintf( 'FRB: plugin loaded (version %s)', FRB_PLUGIN_VERSION ) );
+		}
+
 		// Placeholder for CPT registration, textdomain loading, etc.
 	}
 
