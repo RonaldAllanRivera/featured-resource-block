@@ -319,7 +319,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Plugin that activates without errors and logs a basic “loaded” message (if debug flag enabled).
   - First implementation commit focused only on structure (`feat: add plugin bootstrap skeleton`).
 
-### Phase 2 – Data Model: CPT & Meta
+### Phase 2 – Data Model: CPT & Meta (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (CPT `mist_resource`, REST-registered meta, Resource URL meta box).
 
 - **Objectives**
   - Implement the `mist_resource` CPT and meta in a way that is robust, REST-ready, and secure.

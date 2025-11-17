@@ -63,7 +63,16 @@ class FRB_Plugin {
 			error_log( sprintf( 'FRB: plugin loaded (version %s)', FRB_PLUGIN_VERSION ) );
 		}
 
-		// Placeholder for CPT registration, textdomain loading, etc.
+		// CPT and meta registration.
+		if ( class_exists( 'FRB_Post_Type_Resources' ) ) {
+			FRB_Post_Type_Resources::register();
+		}
+
+		if ( class_exists( 'FRB_Resource_Meta' ) ) {
+			FRB_Resource_Meta::register();
+		}
+
+		// Placeholder for textdomain loading and other init-time setup.
 	}
 
 	/**
