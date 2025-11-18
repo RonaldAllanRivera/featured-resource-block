@@ -14,7 +14,9 @@ All notable changes to this project will be documented in this file.
 - Resource meta (`mist_resource_url`, `mist_remote_id`) and Resource URL meta box via `FRB_Resource_Meta`.
 - Elementor integration via `FRB_Elementor_Integration` and the `Featured Resource Block` widget (`FRB_Widget_Featured_Resource`) with frontend styles in `assets/css/frontend.css`.
 - Resource Sync settings page and options via `FRB_Settings_Page` and `admin/views/settings-page.php`.
-- Mock API sync service with transient caching and cron scheduling via `FRB_Sync_Service` and `FRB_Cron_Manager`, including a configurable API endpoint, a local `FRB_Mock_Api` REST endpoint for offline testing, and a manual "Run Sync Now" action on the settings page.
+- Sync service with transient caching and cron scheduling via `FRB_Sync_Service` and `FRB_Cron_Manager`, including a configurable JSON API endpoint and a manual "Run Sync Now" action on the settings page.
 
 ### Changed
-- Clarified implementation status for Phases 1–6 in `PLAN.md` and `README.md`.
+- Clarified implementation status for Phases 1–7 in `PLAN.md` and `README.md`.
+- Added a short approach summary and QA/hardening notes to `README.md`.
+- Updated sync documentation to reflect a generic JSON endpoint (with optional `X-Master-Key` header support for jsonbin.io-style APIs) instead of a hard-coded mock endpoint or built-in local mock route.

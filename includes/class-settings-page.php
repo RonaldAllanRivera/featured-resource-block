@@ -145,7 +145,7 @@ class FRB_Settings_Page {
 	public static function render_section_intro() {
 		printf(
 			'<p>%s</p>',
-			esc_html__( 'Configure the mock Resource Sync integration. The API key is treated as real configuration even though the endpoint is mocked.', 'featured-resource-block' )
+			esc_html__( 'Configure the Resource Sync integration. The API endpoint should point to a JSON feed (for example, a jsonbin.io bin). When sync is enabled, a WP-Cron event named frb_resource_sync_cron runs approximately every 15 minutes.', 'featured-resource-block' )
 		);
 	}
 
@@ -157,7 +157,7 @@ class FRB_Settings_Page {
 		$api_key = isset( $options['api_key'] ) ? $options['api_key'] : '';
 		?>
 		<input type="text" name="<?php echo esc_attr( self::OPTION_NAME ); ?>[api_key]" value="<?php echo esc_attr( $api_key ); ?>" class="regular-text" />
-		<p class="description"><?php esc_html_e( 'API key used when calling the mock Resource Sync endpoint.', 'featured-resource-block' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Optional API key sent as an X-Master-Key header for private endpoints (for example, jsonbin.io). Leave blank for public or local endpoints that do not require authentication.', 'featured-resource-block' ); ?></p>
 		<?php
 	}
 
@@ -167,24 +167,9 @@ class FRB_Settings_Page {
 	public static function render_field_api_endpoint() {
 		$options      = self::get_options();
 		$api_endpoint = isset( $options['api_endpoint'] ) ? $options['api_endpoint'] : FRB_Sync_Service::API_ENDPOINT;
-		$local_url    = '';
-
-		if ( function_exists( 'rest_url' ) && class_exists( 'FRB_Mock_Api' ) ) {
-			$local_url = rest_url( trailingslashit( FRB_Mock_Api::REST_NAMESPACE ) . ltrim( FRB_Mock_Api::ROUTE_RESOURCES, '/' ) );
-		}
 		?>
 		<input type="text" name="<?php echo esc_attr( self::OPTION_NAME ); ?>[api_endpoint]" value="<?php echo esc_attr( $api_endpoint ); ?>" class="regular-text code" />
-		<p class="description"><?php esc_html_e( 'Override the default mock API endpoint. Leave blank to use the built-in URL from the assignment.', 'featured-resource-block' ); ?></p>
-		<p class="description">
-			<?php esc_html_e( 'Default online mock endpoint:', 'featured-resource-block' ); ?>
-			<code><?php echo esc_html( FRB_Sync_Service::API_ENDPOINT ); ?></code>
-		</p>
-		<?php if ( ! empty( $local_url ) ) : ?>
-			<p class="description">
-				<?php esc_html_e( 'Local mock endpoint (for testing when the online mock is unavailable):', 'featured-resource-block' ); ?>
-				<code><?php echo esc_html( $local_url ); ?></code>
-			</p>
-		<?php endif; ?>
+		<p class="description"><?php esc_html_e( 'Full URL to your JSON endpoint (for example, a jsonbin.io bin or a local REST URL).', 'featured-resource-block' ); ?></p>
 		<?php
 	}
 

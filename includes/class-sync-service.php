@@ -24,9 +24,11 @@ class FRB_Sync_Service {
 	const OPTION_LAST_SYNC_ERROR = 'frb_last_sync_error';
 
 	/**
-	 * Mock API endpoint.
+	 * Default API endpoint.
+	 *
+	 * Intentionally left blank so the endpoint must be configured via settings.
 	 */
-	const API_ENDPOINT = 'https://mocki.io/v1/0c7b33d3-2996-4d7f-a009-4ef34a27c7e9';
+	const API_ENDPOINT = '';
 
 	/**
 	 * Entry point for cron.
@@ -45,15 +47,6 @@ class FRB_Sync_Service {
 
 		$api_key      = isset( $settings['api_key'] ) ? trim( $settings['api_key'] ) : '';
 		$api_endpoint = isset( $settings['api_endpoint'] ) ? trim( $settings['api_endpoint'] ) : self::API_ENDPOINT;
-
-		if ( '' === $api_endpoint ) {
-			$api_endpoint = self::API_ENDPOINT;
-		}
-
-		if ( '' === $api_key ) {
-			self::record_error( 'Sync skipped because API key is missing.' );
-			return;
-		}
 
 		try {
 			$data = get_transient( self::CACHE_KEY );
@@ -85,22 +78,36 @@ class FRB_Sync_Service {
 	 * @return array|null
 	 */
 	protected static function fetch_remote_data( $api_key, $api_endpoint ) {
-		$endpoint = $api_endpoint;
+		$endpoint = is_string( $api_endpoint ) ? trim( $api_endpoint ) : '';
 
 		if ( '' === $endpoint ) {
-			$endpoint = self::API_ENDPOINT;
+			self::record_error( 'Sync skipped because API endpoint is not configured.' );
+			return null;
 		}
 
-		$url = add_query_arg( 'api_key', rawurlencode( $api_key ), $endpoint );
+		$headers = array(
+			'Accept' => 'application/json',
+		);
+
+		$host = wp_parse_url( $endpoint, PHP_URL_HOST );
+
+		// If the endpoint is jsonbin.io and no key is provided, bail early with a clear error.
+		if ( ! empty( $host ) && false !== stripos( $host, 'jsonbin.io' ) && '' === $api_key ) {
+			self::record_error( 'Sync skipped because API key is missing for jsonbin.io endpoint.' );
+			return null;
+		}
+
+		// When an API key is present, send it as an X-Master-Key header (suitable for jsonbin.io or similar APIs).
+		if ( '' !== $api_key ) {
+			$headers['X-Master-Key'] = $api_key;
+		}
 
 		$args = array(
 			'timeout' => 15,
-			'headers' => array(
-				'Accept' => 'application/json',
-			),
+			'headers' => $headers,
 		);
 
-		$response = wp_remote_get( $url, $args );
+		$response = wp_remote_get( $endpoint, $args );
 
 		if ( is_wp_error( $response ) ) {
 			self::record_error( sprintf( 'HTTP request failed: %s', $response->get_error_message() ) );
@@ -140,8 +147,13 @@ class FRB_Sync_Service {
 	 */
 	protected static function process_items( array $data ) {
 		if ( isset( $data['resources'] ) && is_array( $data['resources'] ) ) {
+			// Assignment-style payload: { "resources": [ ... ] }.
 			$items = $data['resources'];
+		} elseif ( isset( $data['record'] ) && is_array( $data['record'] ) ) {
+			// jsonbin.io v3 payload: { "record": [ ... ], "metadata": { ... } }.
+			$items = $data['record'];
 		} else {
+			// Fallback: assume the decoded payload itself is the items array.
 			$items = $data;
 		}
 

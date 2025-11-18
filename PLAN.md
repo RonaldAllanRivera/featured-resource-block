@@ -34,11 +34,11 @@
   - **Menu**: `Settings → Resource Sync`.
   - **Options**:
     - API Key (text).
-    - API Endpoint (text; defaults to the assignment mock URL, can point to a local mock endpoint).
+    - API Endpoint (text; points to a JSON feed such as a jsonbin.io bin).
     - Enable Sync (boolean).
 
-- **Mock API Sync**
-  - **Endpoint**: `https://mocki.io/v1/0c7b33d3-2996-4d7f-a009-4ef34a27c7e9`.
+- **JSON Sync**
+  - **Endpoint**: configurable JSON URL set via the Resource Sync settings page (for example, a jsonbin.io bin).
   - **Schedule**: WP-Cron every 15 minutes.
   - **Behavior**:
     - Fetches remote resources.
@@ -163,7 +163,7 @@
 
 ---
 
-## 7. Mock API Sync & WP-Cron
+## 7. JSON Sync & WP-Cron
 
 - **Scheduling**
   - When `enable_sync` is turned ON:
@@ -390,7 +390,7 @@ Later, I’ll help you turn this outline into a full spoken script.
 ### Phase 5 – Sync Service, Transients & WP-Cron
 
 - **Status**
-  - Completed in version `0.1.0` (FRB_Logger, FRB_Cron_Manager, FRB_Sync_Service, configurable API endpoint, local FRB_Mock_Api REST endpoint, cron wiring, and manual dev sync docs).
+  - Completed in version `0.1.0` (FRB_Logger, FRB_Cron_Manager, FRB_Sync_Service, configurable JSON endpoint with optional header support for private APIs (for example, jsonbin.io), cron wiring, and manual dev sync docs).
 
 - **Objectives**
   - Implement a maintainable sync pipeline that demonstrates solid API integration, caching, and cron scheduling.
@@ -404,7 +404,7 @@ Later, I’ll help you turn this outline into a full spoken script.
     - Use transients to cache successful responses for 5 minutes.
     - Map API data to `mist_resource` posts (create or update based on `mist_remote_id`).
   - Implement a small logger (`FRB_Logger`) to centralize error logging and optional debug output.
-  - Implement a local mock API class (`FRB_Mock_Api`) in `class-mock-api.php` to expose a REST endpoint for demo resources.
+  - Support both simple array payloads and jsonbin.io-style `{ "record": [ ... ] }` payloads when mapping remote items to local posts.
   - Provide a way to manually trigger sync in development (e.g. temporary admin action or WP-CLI guidance in `README.md`).
 
 - **Deliverables**
@@ -434,7 +434,10 @@ Later, I’ll help you turn this outline into a full spoken script.
   - Polished front-end experience across viewport sizes.
   - Commit (`chore: refine frontend styles and accessibility`).
 
-### Phase 7 – Hardening, QA & Final Documentation
+### Phase 7 – Hardening, QA & Final Documentation (Completed)
+
+- **Status**
+  - Completed in version `0.1.0` (manual QA of sync scenarios, code-level hardening for sanitization/escaping/capabilities, and documentation updates including README approach summary and phase status).
 
 - **Objectives**
   - Validate behavior under edge cases and present the plugin as production-ready.

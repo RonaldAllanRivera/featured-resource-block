@@ -71,10 +71,6 @@ class FRB_Plugin {
 		if ( class_exists( 'FRB_Cron_Manager' ) ) {
 			FRB_Cron_Manager::register();
 		}
-		// Local mock API endpoint for development/testing.
-		if ( class_exists( 'FRB_Mock_Api' ) ) {
-			FRB_Mock_Api::register();
-		}
 	}
 
 	/**

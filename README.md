@@ -1,6 +1,8 @@
 # Featured Resource Block
 
-A standalone WordPress plugin that adds a `Resources` custom post type and an Elementor widget called `Featured Resource Block`. It also supports scheduled syncing from a mock API, with caching and robust error handling.
+A standalone WordPress plugin that adds a `Resources` custom post type and an Elementor widget called `Featured Resource Block`. It also supports scheduled syncing from a configurable JSON endpoint, with caching and robust error handling.
+
+Approach: structure the plugin around a small `FRB_Plugin` orchestrator, a `Resources` CPT, and an Elementor widget with semantic, accessible markup. The sync pipeline uses a configurable JSON endpoint (online or local, for example a jsonbin.io bin or a local REST route), WP-Cron every 15 minutes, and transients to cache responses while mapping items into `mist_resource` posts. Hardening focused on sanitization/escaping, capability checks, and manual QA of sync on/off behavior, manual sync, and error handling.
 
 ---
 
@@ -25,9 +27,9 @@ No other plugins are required.
   - `Resources` custom post type and meta.
   - Elementor `Featured Resource Block` widget (Elementor integration and frontend CSS).
   - Resource Sync settings page and options (API Key, API Endpoint, Enable Sync, status panel, and "Run Sync Now" button).
-  - Mock API sync service (cron + transients) powered by `FRB_Sync_Service` and `FRB_Cron_Manager`, with configurable endpoint and a local mock REST endpoint for offline testing.
+  - Sync service (cron + transients) powered by `FRB_Sync_Service` and `FRB_Cron_Manager`, with configurable endpoint.
 - **Planned (next phases)**:
-  - Front-end polish, accessibility improvements, QA hardening, and final video walkthrough (see `PLAN.md` Phases 6–8).
+  - Final video walkthrough and any additional polish discovered during recording (see `PLAN.md` Phase 8).
 
 ---
 
@@ -87,8 +89,8 @@ No other plugins are required.
 
 1. Go to **Settings → Resource Sync**.
 2. Configure:
-   - **API Key** – your API key (mocked for this assignment, but handled as real config).
-   - **API Endpoint** – the remote or local URL to fetch resources from (defaults to the assignment’s mock endpoint; the settings page also shows a local mock URL you can copy).
+   - **API Key** – optional secret sent as an `X-Master-Key` header for private JSON endpoints (for example, jsonbin.io). Leave blank for public or local endpoints that do not require authentication.
+   - **API Endpoint** – the full URL to the JSON feed to fetch resources from (for example, a jsonbin.io bin URL or a local REST URL).
    - **Enable Sync** – turn scheduled syncing on or off.
 3. Click **Save Changes**.
 
@@ -97,8 +99,7 @@ No other plugins are required.
 - When **Enable Sync** is ON:
   - The plugin schedules a WP-Cron event every **15 minutes**.
   - On each run, it:
-    - Fetches data from  
-      `https://mocki.io/v1/0c7b33d3-2996-4d7f-a009-4ef34a27c7e9`.
+    - Fetches data from the configured **API Endpoint**.
     - Caches the raw response using a **transient** for 5 minutes to avoid API overuse.
     - Decodes the JSON and maps each item to a local `Resource` post.
     - **Creates** new posts if a resource does not exist yet.
@@ -129,7 +130,7 @@ Both paths use the current Resource Sync settings (API key, API endpoint, Enable
 
 ## Known Limitations
 
-- **API schema** is assumed based on the mock endpoint and may require adjustment if the payload changes.
+- **API schema** is assumed based on the configured JSON endpoint / example feed and may require adjustment if the payload changes.
 - **Image handling** from the remote API is basic by design:
   - If remote images are available, they may be imported / mapped in a simplified way.
   - There is no full media-library management UI for imported images.

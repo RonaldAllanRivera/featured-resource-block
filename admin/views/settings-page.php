@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wrap">
 	<h1><?php esc_html_e( 'Resource Sync', 'featured-resource-block' ); ?></h1>
 
-	<p><?php esc_html_e( 'Configure how the Featured Resource Block plugin synchronises mock resources from the remote API.', 'featured-resource-block' ); ?></p>
+	<p><?php esc_html_e( 'Configure how the Featured Resource Block plugin syncs Resources from a JSON feed, view sync status, and trigger the job manually.', 'featured-resource-block' ); ?></p>
 
 	<?php if ( isset( $_GET['frb_sync_ran'] ) && '1' === $_GET['frb_sync_ran'] ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 		<div class="notice notice-success is-dismissible">
@@ -63,6 +63,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="hidden" name="action" value="frb_run_sync_now" />
 		<?php submit_button( __( 'Run Sync Now', 'featured-resource-block' ), 'secondary', 'frb-run-sync-now', false ); ?>
 	</form>
+	<p>
+		<?php esc_html_e( 'On environments with WP-CLI, you can run the same job with:', 'featured-resource-block' ); ?>
+		<code>wp cron event run frb_resource_sync_cron</code>
+	</p>
 
 	<?php if ( defined( 'FRB_DEBUG' ) && FRB_DEBUG && current_user_can( 'manage_options' ) ) : ?>
 		<hr />
