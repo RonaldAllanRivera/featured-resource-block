@@ -83,6 +83,18 @@ No other plugins are required.
 
 ---
 
+## Screenshots
+
+Below are a few screenshots of the plugin in action:
+
+![Screenshot 1](./Screenshot_1.jpg)
+![Screenshot 2](./Screenshot_2.jpg)
+![Screenshot 3](./Screenshot_3.jpg)
+![Screenshot 4](./Screenshot_4.jpg)
+![Screenshot 5](./Screenshot_5.jpg)
+
+---
+
 ## Resource Sync
 
 ### Settings Page
